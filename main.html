@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>Isaac RNG (Pill Predictor)</title>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <h1>Isaac RNG</h1>
+    <h2>Pill Predictor</h2>
+    <table id="options">
+      <tr>
+        <td>
+          <input type="checkbox" id="achievement_1" checked />
+          Have Percs and Addicted? (227)
+        </td>
+        <td>
+          <input
+            type="checkbox"
+            id="achievement_2"
+            checked
+            onchange="changedValue()"
+          />
+          Have Relax and ??? (228)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            id="achievement_3"
+            checked
+            onchange="changedValue()"
+          />
+          Have Gulp!? (321)
+        </td>
+        <td>
+          <input
+            type="checkbox"
+            id="achievement_4"
+            checked
+            onchange="changedValue()"
+          />
+          Have Horf!? (325)
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            id="achievement_5"
+            checked
+            onchange="changedValue()"
+          />
+          Have Feels like I'm walking on sunshine!? (324)
+        </td>
+        <td>
+          <input
+            type="checkbox"
+            id="achievement_6"
+            checked
+            onchange="changedValue()"
+          />
+          Have Vurp? (330)
+        </td>
+      </tr>
+    </table>
+
+    <input
+      type="text"
+      id="seedString"
+      placeholder="Seed string"
+      onchange="
+        document.getElementById('seedNumber').value = Seed.String2Seed(
+          this.value,
+        );
+        changedValue();
+      "
+    />
+    <input
+      type="text"
+      id="seedNumber"
+      placeholder="Seed number"
+      onchange="
+        document.getElementById('seedString').value = Seed.Seed2String(
+          parseInt(this.value),
+        );
+        changedValue();
+      "
+    />
+    <button onclick="predict()">Predict Pills</button>
+    <table id="pillTable"></table>
+  </body>
+</html>
