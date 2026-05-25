@@ -184,7 +184,7 @@ const pillColorNames = [
 const predeterminedStrengths = [3, 3, 3, 3, 2, 1, 0, -1, -1, 3, 2, 1, -1, -1];
 
 function predictPills(seed, achievements) {
-  console.log(seed, achievements);
+  // console.log(seed, achievements);
   const startRNG = new RNG(seed, 0x3, 0x17, 0x19);
   const stageSeeds = [];
   for (let i = 0; i < 0xe; i++) {
@@ -303,4 +303,89 @@ function changedValue() {
     return;
   }
   predict();
+}
+
+function createInfo(){
+  const infoDiv = document.createElement("div");
+  const infoDropbox = document.createElement("select");
+  const infoOptions = pillNames;
+  for (let i = 0; i < infoOptions.length; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.text = infoOptions[i];
+    infoDropbox.appendChild(option);
+  }
+  infoDiv.appendChild(infoDropbox);
+
+  const pillImgDropdown = document.createElement("select");
+  for (let i = 1; i < pillColorNames.length; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.text = pillColorNames[i];
+    pillImgDropdown.appendChild(option);
+  }
+  infoDropbox.addEventListener("change", () => {
+    setPillInfo();
+  });
+
+  pillImgDropdown.addEventListener("change", () => {
+    setPillInfo();
+  });
+
+  infoDiv.appendChild(pillImgDropdown);
+
+  document.getElementById("info").appendChild(infoDiv);
+}
+
+function bfAchievementsOptions()
+{
+  const seed = new Seed(parseInt(document.getElementById("seedNumber").value));
+  if (seed.seed < 0) {
+    alert("Invalid seed");
+    return;
+  }
+
+  for (let i = 0; i < 64; i++) {
+    const achievements = [];
+    for (let j = 0; j < 6; j++) {
+      achievements.push((i & (1 << j)) > 0);
+    }
+    const pill_effects = predictPills(seed.seed, achievements);
+    console.log("Achievement combination: " + achievements, pill_effects);
+
+    const knownPills = document.getElementById("info")
+    let correct = 0;
+    for (let i = 0; i < knownPills.children.length; i++) {
+      const pillInfo = knownPills.children[i];
+      const pillEffect = parseInt(pillInfo.children[0].value);
+      const pillColor = parseInt(pillInfo.children[1].value)
+      console.log(pillEffect, pillColor, pill_effects[pillColor+1])
+      if (pill_effects[pillColor] === pillEffect) {
+        correct++;
+      }
+    }
+    if (correct == knownPills.children.length) {
+      console.log("Achievement combination: " + achievements);
+        return achievements;
+    }
+
+  } 
+  return false;
+}
+
+function setPillInfo()
+{
+  const achievements = bfAchievementsOptions();
+  if (!achievements) {
+    return;
+  }
+  for (let i = 0; i < achievements.length; i++) {
+    document.getElementById("achievement_" + (i + 1)).checked = achievements[i];
+  }
+}
+
+function addInfo()
+{
+  createInfo();
+  setPillInfo();
 }

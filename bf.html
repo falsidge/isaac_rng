@@ -1,12 +1,41 @@
 <html>
   <head>
     <title>Isaac RNG (Pill Predictor)</title>
-    <script src="main.js"></script>
+    <script src="bf.js"></script>
   </head>
-  <body>
+  <body onload="createInfo()">
     <h1>Isaac RNG</h1>
     <h2>Pill Predictor</h2>
-    <table id="options">
+    <div id="info">
+
+    </div>
+    <input type="button" value="Add Info" onclick="addInfo()"/>
+
+    <input
+      type="text"
+      id="seedString"
+      placeholder="Seed string"
+      onchange="
+        document.getElementById('seedNumber').value = Seed.String2Seed(
+          this.value,
+        );
+        changedValue();
+      "
+    />
+    <input
+      type="text"
+      id="seedNumber"
+      placeholder="Seed number"
+      onchange="
+        document.getElementById('seedString').value = Seed.Seed2String(
+          parseInt(this.value),
+        );
+        changedValue();
+      "
+    />
+    <button onclick="setPillInfo(); predict()">Predict Pills</button>
+    <table id="pillTable"></table>
+        <table id="options">
       <tr>
         <td>
           <input type="checkbox" id="achievement_1" checked onchange="changedValue()" />
@@ -64,29 +93,5 @@
       </tr>
     </table>
 
-    <input
-      type="text"
-      id="seedString"
-      placeholder="Seed string"
-      onchange="
-        document.getElementById('seedNumber').value = Seed.String2Seed(
-          this.value,
-        );
-        changedValue();
-      "
-    />
-    <input
-      type="text"
-      id="seedNumber"
-      placeholder="Seed number"
-      onchange="
-        document.getElementById('seedString').value = Seed.Seed2String(
-          parseInt(this.value),
-        );
-        changedValue();
-      "
-    />
-    <button onclick="predict()">Predict Pills</button>
-    <table id="pillTable"></table>
   </body>
 </html>
